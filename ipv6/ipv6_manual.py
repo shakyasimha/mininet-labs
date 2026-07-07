@@ -3,6 +3,8 @@ from mininet.node import OVSBridge
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 import time
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def emulated_ipv6_net():
     # Initialize ipv6 net
@@ -56,6 +58,18 @@ def emulated_ipv6_net():
     CLI(net)
     net.stop() 
 
+# Function for generating graph for the topology
+def generate_graph():
+    G = nx.Graph()
+    G.add_edges_from([('h1','s1'), ('r1','s1'), ('h2','s2'), ('r1','s2')])
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=2000, font_size=16, font_weight='bold')
+    plt.title("IPv6 Network Topology")
+    plt.savefig("ipv6_topology.png")
+    plt.show()
+    print("** Topology Diagram")
+
 if __name__ == "__main__":
     setLogLevel("info")
     emulated_ipv6_net()
+    generate_graph()
